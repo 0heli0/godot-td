@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://btyafbl42yecf"]
+
+[ext_resource type="Script" uid="uid://cvo0gb588dncr" path="res://scenes/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/map.tscn" id="2_map"]
+[ext_resource type="PackedScene" path="res://scenes/base_crystal.tscn" id="3_base"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/wave_spawner.tscn" id="4_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ui_root.tscn" id="5_ui"]
+
+[node name="Main" type="Node2D" unique_id=1401246761]
+script = ExtResource("1_main")
+
+[node name="Map" parent="." unique_id=1287667797 instance=ExtResource("2_map")]
+
+[node name="BaseCrystal" parent="." unique_id=1597641997 instance=ExtResource("3_base")]
+
+[node name="WaveSpawner" parent="." unique_id=266972957 instance=ExtResource("4_spawner")]
+
+[node name="UIRoot" parent="." unique_id=182186787 instance=ExtResource("5_ui")]

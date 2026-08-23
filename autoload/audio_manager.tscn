@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://autoload/audio_manager.gd" id="1_am"]
+[ext_resource type="AudioStream" path="res://material/kenney_ui-audio/Audio/click1.ogg" id="2_click"]
+[ext_resource type="AudioStream" path="res://material/kenney_ui-audio/Audio/rollover1.ogg" id="3_hover"]
+[ext_resource type="AudioStream" path="res://material/kenney_rpg-audio/Audio/knifeSlice.ogg" id="4_attack"]
+[ext_resource type="AudioStream" path="res://material/kenney_rpg-audio/Audio/metalPot1.ogg" id="5_explosion"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_am")
+
+[node name="UIClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_click")
+
+[node name="UIHover" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_hover")
+
+[node name="Attack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_attack")
+
+[node name="Explosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_explosion")
