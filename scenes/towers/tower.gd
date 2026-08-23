@@ -14,14 +14,15 @@ var _cooldown: float = 0.0  # 攻击冷却计时
 var _enemies_in_range: Array[Enemy] = []  # 进入攻击范围的敌人
 var _skills: Array[SkillData] = []  # 已解锁的技能
 
+@onready var _range_area: Area2D = $Range  # 攻击范围检测区域
 @onready var _range_shape: CollisionShape2D = $Range/CollisionShape2D  # 范围碰撞形状
 @onready var _fire_point: Node2D = $FirePoint  # 发射弹道的位置
 
 
 # 初始化：连接范围检测信号并设置攻击范围
 func _ready() -> void:
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
+	_range_area.body_entered.connect(_on_body_entered)
+	_range_area.body_exited.connect(_on_body_exited)
 	_update_range()
 
 
