@@ -19,6 +19,8 @@ func _ready() -> void:
 	GameManager.reset()
 	_base_crystal.global_position = _map.get_base_position()
 	_add_initial_tower()
+	# 把波次生成器信号传给 UI，确保倒计时能正常刷新
+	_ui.connect_wave_spawner(_wave_spawner)
 
 
 # 处理鼠标左键点击：在地图空白处建造塔

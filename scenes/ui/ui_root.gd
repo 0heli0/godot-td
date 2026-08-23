@@ -6,7 +6,7 @@ extends Control
 @onready var _wave_label: Label = $TopBar/Wave  # 波次显示标签
 @onready var _status_label: Label = $StatusLabel  # 胜负状态提示
 @onready var _next_wave_button: Button = $NextWaveButton  # 手动开始下一波按钮
-@onready var _countdown_label: Label = $CountdownLabel  # 下一波倒计时标签
+@onready var _countdown_label: Label = $TopBar/CountdownLabel  # 下一波倒计时标签
 
 
 # 初始化：连接 GameManager 信号、按钮事件并刷新 UI
@@ -18,8 +18,17 @@ func _ready() -> void:
 	GameManager.game_state_changed.connect(_on_state_changed)
 	_next_wave_button.pressed.connect(_on_next_wave_pressed)
 	_next_wave_button.mouse_entered.connect(_on_button_hover)
-	_connect_wave_spawner()
+	_countdown_label.visible = false
 	_update_labels()
+
+
+# 由 Main.gd 传入 WaveSpawner 并连接信号
+func connect_wave_spawner(spawner: Node) -> void:
+	if spawner == null:
+		return
+	spawner.wave_started.connect(_on_wave_started)
+	spawner.wave_finished.connect(_on_wave_finished)
+	spawner.wave_countdown_tick.connect(_on_countdown_tick)
 
 
 # 更新资源与波次显示
@@ -44,16 +53,6 @@ func _on_state_changed(state: GameManager.GameState) -> void:
 		_:
 			_status_label.text = ""
 			_next_wave_button.visible = true
-
-
-# 连接波次生成器的倒计时信号
-func _connect_wave_spawner() -> void:
-	var spawner := get_tree().get_first_node_in_group("wave_spawner") as Node
-	if spawner == null:
-		return
-	spawner.wave_started.connect(_on_wave_started)
-	spawner.wave_finished.connect(_on_wave_finished)
-	spawner.wave_countdown_tick.connect(_on_countdown_tick)
 
 
 # 新波次开始时隐藏倒计时
