@@ -13,11 +13,13 @@ var _spawned_count: int = 0  # 当前波次已生成敌人数量
 var _current_wave: WaveData = null  # 当前波次配置
 
 @onready var _timer: Timer = $Timer  # 控制敌人生成间隔的定时器
+@onready var _advance_timer: Timer = $AdvanceTimer  # 波次间自动推进定时器
 
 
 # 初始化定时器与状态监听
 func _ready() -> void:
 	_timer.timeout.connect(_spawn_next)
+	_advance_timer.timeout.connect(start_next_wave)
 	GameManager.game_state_changed.connect(_on_state_changed)
 
 
@@ -27,8 +29,10 @@ func _on_state_changed(state: GameManager.GameState) -> void:
 		start_next_wave()
 
 
-# 开始下一波；若无配置则自动生成
+# 开始下一波；若无配置则自动生成。手动点击按钮也会调用此方法。
 func start_next_wave() -> void:
+	# 取消自动推进，避免手动开始后重复触发
+	_advance_timer.stop()
 	# 超过总波次则判定胜利
 	if GameManager.wave >= GameManager.total_waves:
 		GameManager.state = GameManager.GameState.WON
@@ -70,11 +74,13 @@ func _make_enemy_data(wave_number: int) -> EnemyData:
 func _spawn_next() -> void:
 	if _current_wave == null or GameManager.state != GameManager.GameState.PLAYING:
 		return
-	# 当前波次敌人已全部生成
+	# 当前波次敌人已全部生成，结束本波并启动自动推进定时器
 	if _spawned_count >= _current_wave.enemy_count:
 		_is_spawning = false
 		wave_finished.emit(GameManager.wave)
 		_timer.stop()
+		# 5 秒后自动开始下一波；玩家也可通过按钮提前开始
+		_advance_timer.start(5.0)
 		return
 	_spawned_count += 1
 	_spawn_enemy()

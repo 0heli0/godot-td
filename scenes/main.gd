@@ -13,12 +13,12 @@ extends Node2D
 const TOWER_COST := {"money": 50, "wood": 10, "ore": 0}
 
 
-# 场景加载完成时：重置游戏、定位基地、放置初始塔、启动第一波
+# 场景加载完成时：重置游戏、定位基地、放置初始塔
+# 波次由 WaveSpawner 自动监听 GameManager 状态变化后启动
 func _ready() -> void:
 	GameManager.reset()
 	_base_crystal.global_position = _map.get_base_position()
 	_add_initial_tower()
-	_wave_spawner.start_next_wave()
 
 
 # 处理鼠标左键点击：在地图空白处建造塔
