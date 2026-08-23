@@ -61,9 +61,10 @@ func _on_wave_started(_wave: int) -> void:
 	_countdown_label.visible = false
 
 
-# 波次全部敌人出现后显示倒计时
+# 波次全部敌人出现后显示倒计时，并立即显示初始 30 秒
 func _on_wave_finished(_wave: int) -> void:
 	_countdown_label.visible = true
+	_countdown_label.text = "下一波: 30s"
 
 
 # 更新倒计时显示

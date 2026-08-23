@@ -87,8 +87,8 @@ func _spawn_next() -> void:
 		_is_spawning = false
 		wave_finished.emit(GameManager.wave)
 		_timer.stop()
-		# 120 秒后自动开始下一波；玩家也可通过按钮提前开始
-		_advance_timer.start(120.0)
+		# 30 秒后自动开始下一波；玩家也可通过按钮提前开始
+		_advance_timer.start(30.0)
 		return
 	_spawned_count += 1
 	_spawn_enemy()
