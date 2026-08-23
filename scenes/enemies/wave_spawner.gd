@@ -4,6 +4,8 @@ extends Node
 signal wave_started(wave: int)
 # 波次结束信号
 signal wave_finished(wave: int)
+# 倒计时刷新信号，参数为剩余秒数
+signal wave_countdown_tick(time_left: float)
 
 # 手动配置的波次数据列表；为空时自动生成
 @export var waves: Array[WaveData] = []
@@ -21,6 +23,12 @@ func _ready() -> void:
 	_timer.timeout.connect(_spawn_next)
 	_advance_timer.timeout.connect(start_next_wave)
 	GameManager.game_state_changed.connect(_on_state_changed)
+
+
+# 每帧刷新倒计时显示
+func _process(delta: float) -> void:
+	if not _advance_timer.is_stopped():
+		wave_countdown_tick.emit(_advance_timer.time_left)
 
 
 # 游戏状态回到 PLAYING 且未在生成时，自动开始下一波
@@ -79,8 +87,8 @@ func _spawn_next() -> void:
 		_is_spawning = false
 		wave_finished.emit(GameManager.wave)
 		_timer.stop()
-		# 5 秒后自动开始下一波；玩家也可通过按钮提前开始
-		_advance_timer.start(5.0)
+		# 120 秒后自动开始下一波；玩家也可通过按钮提前开始
+		_advance_timer.start(120.0)
 		return
 	_spawned_count += 1
 	_spawn_enemy()
